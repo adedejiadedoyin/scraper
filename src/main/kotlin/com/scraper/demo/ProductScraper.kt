@@ -41,8 +41,8 @@ class ProductScraper (var url:String) {
             println("i am scraping by json ld schema")
             val mergedXml = convertAndMergeJSONtoXML(jsonList)
             val outputProduct = processByJsonLd(mergedXml)
-            this.product.price = outputProduct.price
-            this.product.priceCurrency = outputProduct.priceCurrency
+            this.product.amount = outputProduct.amount
+            //this.product.currency = outputProduct.currency
 
             if (isNullOrEmpty(this.product.mainImage))
                 this.product.mainImage = outputProduct.mainImage
@@ -57,12 +57,11 @@ class ProductScraper (var url:String) {
     ------------------------  HELPER METHODS -------------------------------------------------------------
      */
 
-    private fun processByHtml(): Product {
-        product.name = fetchTitle()
-        product.url= fetchUrl()
+    private fun processByHtml(){
+        product.title = fetchTitle()
+        product.link= fetchUrl()
         product.mainImage = fetchImageFromSocial()
         product.images = fetchValidImagesFromPage()
-        return product
     }
 
     //Fetches Title of item/product
@@ -285,11 +284,11 @@ class ProductScraper (var url:String) {
     private fun processByJsonLd(xml: String): Product {
 
         val product = Product()
-        product.name = fetchTitleFromXml(xml)
-        product.price = fetchPriceFromXml(xml)
-        product.priceCurrency= fetchPriceCurrencyFromXml(xml)
+        product.title = fetchTitleFromXml(xml)
+        product.amount = fetchPriceCurrencyFromXml(xml) + ' ' + fetchPriceFromXml(xml)
+        //product.currency= fetchPriceCurrencyFromXml(xml)
         product.images = fetchImageUrlFromXml(xml)
-        product.url = url
+        product.link = url
 
         return product
     }

@@ -112,3 +112,15 @@ fun convertAndMergeJSONtoXML(jsonList:MutableList<String>): String {
 
     return xml
 }
+
+fun isNumeric(strNum: String): Boolean {
+    try {
+        val d = java.lang.Double.parseDouble(strNum)
+    } catch (nfe: NumberFormatException) {
+        return false
+    } catch (nfe: NullPointerException) {
+        return false
+    }
+
+    return true
+}
